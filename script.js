@@ -19,10 +19,10 @@ const tooltip = d3.select(".tooltip");
 
 // Load GeoJSON and dataset
 Promise.all([
-    d3.json("custom.geo.json"), //custom GeoJSON file
-    d3.csv("health_data.csv")   //dataset
+    d3.json("custom.geo.json"), // Load your custom GeoJSON file
+    d3.csv("health_data.csv")   // Load the dataset
 ]).then(([geojson, healthData]) => {
-    //Map dataset to a dictionary by country
+    // Map dataset to a dictionary by country
     const healthMap = {};
     healthData.forEach(d => {
         healthMap[d.Country] = {
@@ -58,3 +58,4 @@ Promise.all([
             }
         })
         .on("mouseout", () => tooltip.style("display", "none"));
+});

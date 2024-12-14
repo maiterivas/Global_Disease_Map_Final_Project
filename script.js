@@ -1,61 +1,64 @@
-// Set map dimensions
-const width = 960;
-const height = 600;
+const map = L.map('map').setView([20, 0], 2);
 
-// Create SVG
-const svg = d3.select("#map")
-    .attr("width", width)
-    .attr("height", height);
+// Add a tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors',
+    maxZoom: 18
+}).addTo(map);
 
-// Create a projection and path generator
-const projection = d3.geoMercator()
-    .scale(150)
-    .translate([width / 2, height / 1.5]);
-
-const path = d3.geoPath().projection(projection);
-
-// Tooltip
-const tooltip = d3.select(".tooltip");
-
-// Load GeoJSON and dataset
+// Load GeoJSON and CSV data
 Promise.all([
-    d3.json("custom.geo.json"), // Load your custom GeoJSON file
-    d3.csv("health_data.csv")   // Load the dataset
-]).then(([geojson, healthData]) => {
-    // Map dataset to a dictionary by country
-    const healthMap = {};
-    healthData.forEach(d => {
-        healthMap[d.Country] = {
-            disease: d.Disease,
-            mortalityRate: +d["Mortality Rate"],
-            affectedPopulation: +d["Affected Population"]
+    d3.json('countries.geojson'), // Replace with your GeoJSON file
+    d3.csv('health_data.csv')   // Replace with your CSV file
+]).then(([geojson, csvData]) => {
+    // Convert CSV data into a dictionary for quick lookup
+    const dataDict = {};
+    csvData.forEach(row => {
+        dataDict[row.Country.trim()] = {
+            Disease: row.Disease,
+            DiseaseCategory: row.DiseaseCategory,
+            HealthcareAccess: row.HealthcareAccess,
+            MortalityRate: row.MortalityRate,
+            PopulationAffected: row.PopulationAffected
         };
     });
 
-    // Bind data and draw map
-    svg.selectAll("path")
-        .data(geojson.features) // Use features from custom.geo.json
-        .join("path")
-        .attr("d", path)
-        .attr("fill", d => {
-            const countryData = healthMap[d.properties.ADMIN]; // Ensure matching property
-            return countryData ? "steelblue" : "#ccc"; // Color countries with data
-        })
-        .attr("stroke", "#333")
-        .attr("stroke-width", 0.5)
-        .on("mouseover", (event, d) => {
-            const countryData = healthMap[d.properties.ADMIN];
-            if (countryData) {
-                tooltip.style("display", "block")
-                    .style("left", `${event.pageX + 5}px`)
-                    .style("top", `${event.pageY - 30}px`)
-                    .html(`
-                        <strong>${d.properties.ADMIN}</strong><br>
-                        Disease: ${countryData.disease}<br>
-                        Mortality Rate: ${countryData.mortalityRate}%<br>
-                        Affected Population: ${countryData.affectedPopulation.toLocaleString()}
-                    `);
-            }
-        })
-        .on("mouseout", () => tooltip.style("display", "none"));
+    // Overlay GeoJSON data onto the Leaflet map
+    L.geoJSON(geojson, {
+        onEachFeature: (feature, layer) => {
+            const countryName = feature.properties.ADMIN; // Adjust based on your GeoJSON
+            const stats = dataDict[countryName];
+
+            // Bind popup to each feature
+            const popupContent = stats
+                ? `
+                <strong>${countryName}</strong><br>
+                <strong>Disease:</strong> ${stats.Disease}<br>
+                <strong>Disease Category:</strong> ${stats.DiseaseCategory}<br>
+                <strong>Healthcare Access:</strong> ${stats.HealthcareAccess}%<br>
+                <strong>Mortality Rate:</strong> ${stats.MortalityRate}%<br>
+                <strong>Population Affected:</strong> ${stats.PopulationAffected}
+                `
+                : `<strong>${countryName}</strong><br>No data available.`;
+
+            layer.bindPopup(popupContent);
+
+            // Optional: Add hover interaction for better UX
+            layer.on('mouseover', () => {
+                layer.openPopup();
+                layer.setStyle({ fillOpacity: 0.7 });
+            });
+            layer.on('mouseout', () => {
+                layer.closePopup();
+                layer.setStyle({ fillOpacity: 0.5 });
+            });
+        },
+        style: {
+            color: '#3388ff',
+            weight: 1,
+            fillOpacity: 0.5
+        }
+    }).addTo(map);
+}).catch(error => {
+    console.error('Error loading data:', error);
 });

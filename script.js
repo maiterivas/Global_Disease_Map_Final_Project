@@ -20,8 +20,8 @@ const tooltip = d3.select("body")
 
 // Load GeoJSON and CSV data
 Promise.all([
-    d3.json('countries.geojson'), // Replace with your GeoJSON file
-    d3.csv('Country_Data.csv')   // Replace with your CSV file
+    d3.json('https://raw.githubusercontent.com/maiterivas/Global_Socioeconomic_Map/8506c59221c9d7ab16dd8f93dbbc2bbdf608977d/countries.geojson'), // GeoJSON file
+    d3.csv('Country_Data.csv') // CSV file
 ]).then(([geojson, csvData]) => {
     // Convert CSV data into a dictionary for quick lookup
     const dataDict = {};

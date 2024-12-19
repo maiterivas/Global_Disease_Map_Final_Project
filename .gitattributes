@@ -1,2 +1,2 @@
 *.geojson filter=lfs diff=lfs merge=lfs -text
-
+git lfs untrack "*.csv"

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explanation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            margin: 0 10px;
+            padding: 5px 10px;
+            background-color: #555;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #777;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sketches img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Global Socioeconomic Factors Map - Documentation</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="documentation.html">Documentation</a>
+            <a href="video.html">Video</a>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h2>About This Project</h2>
+        <p>
+            The Global Socioeconomic Factors Map was designed to be an interactive tool to visualize various socioeconomic data
+            across different countries. The datasets include indicators like Child Mortality, Health, Income, Inflation,
+            Life Expectancy, and GDP per Capita. By selecting a dataset from the dropdown menu, users can explore how
+            these factors vary globally and analyze trends and patterns.
+        </p>
+
+        <h3>Design Process</h3>
+        <p>
+            My initial idea was to create a comprehensive visualization that included disease data across multiple years
+            and countries. I attempted to use a much larger dataset from Kaggle that included over 10,000 rows with
+            repeated countries and diseases over different years. However, I found it challenging to clean and organize
+            this data in a meaningful way for visualization. After several iterations and failed attempts, I pivoted to
+            a simpler dataset that focused on socioeconomic indicators for each country.
+        </p>
+        <p>
+            I started by sketching initial ideas for the map and interaction design. My sketches included ideas for
+            dropdowns, legends, and popups that would display detailed information for each country.
+        </p>
+        <div class="sketches">
+            <img src="sketch1.jpg" alt="Initial Sketch 1">
+        </div>
+
+        <h3>Design Choices</h3>
+        <p>
+            -Color Encoding: I used a color gradient to represent the values of each dataset. This allows users to
+            quickly identify countries with higher or lower values for the selected indicator.
+            <br>-Dropdown Menu: The dropdown menu was included to let users easily switch between datasets without
+            overwhelming the map interface.
+            <br>-Dynamic Legend: The legend updates dynamically to reflect the selected dataset and its range, making it
+            easier to interpret the visualization.
+            <br>-Popups: Detailed popups were included to provide users with a mini bar chart of all values of a specific country.
+            <br>-Clicks: 
+        </p>
+
+        <h3>Discoveries and Insights</h3>
+        <p>
+            Through this visualization, I observed several patterns:
+            <br>- Countries with higher GDP per capita tend to have better health indicators like life expectancy.
+            <br>- Countries with high child mortality rates often have low income levels.
+            <br>- Inflation rates varied widely, and their impact on other indicators can be explored further.
+        </p>
+        <p>
+            For example, when visualizing Life Expectancy, it was clear that many African countries had significantly
+            lower values compared to European and North American countries. This highlighted the differences in global
+            healthcare and living conditions.
+        </p>
+        <h3>Evidence from Visualizations</h3>
+        <p>
+            Below are screenshots illustrating some of the patterns and insights discovered through the map:
+        </p>
+        <div class="screenshots">
+            <h4>Child Mortality Findings</h4>
+            <img src="screenshot1.png" alt="Visualization Screenshot 1">
+            <h4>Life Expectancy Findings</h4>
+            <img src="screenshot2.png" alt="Visualization Screenshot 2">
+        </div>
+
+        <h3>Challenges and Lessons Learned</h3>
+        <p>
+            One major challenge was finding a good dataset, and how to display the data given. For example, my original idea
+            was to use a large dataset about diseases within countries. However, this proved to be difficult due to the size
+            of the dataset (over 10,000 rows) and the repeated countries and diseases within it. Cleaning and aggregating data for meaningful
+            visualization proved to be too complex within the given timeframe. This experience taught me the importance
+            of selecting a manageable dataset and focusing on clear, actionable insights. I decided to go with the dataset I used
+            because it did not have repeated countries or values, and allowed me to better focus on using D3 for my interactive data visualizations.
+            <br>
+            <br>
+            This Project Used the 
+            <a href="https://www.kaggle.com/datasets/samira1992/countries-intermediate-dataset/data" target="_blank">
+                Countries Intermediate Dataset
+            </a> for the data within the visualization.
+            <br>
+            The JSON file was helped generated by the following repository: <a href="https://github.com/datasets/geo-countries/blob/main/data/countries.geojson" target="_blank">
+                Countries JSON
+            </a>.
+        </p>
+    
+        <iframe 
+            src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
+</body>
+</html>
